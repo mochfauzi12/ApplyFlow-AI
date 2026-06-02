@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { UploadCloud, FileText, CheckCircle } from "lucide-react"
+import { ResumeUploaderCard } from "./resume-uploader"
 
 export default function DashboardPage() {
   return (
@@ -56,14 +57,7 @@ export default function DashboardPage() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
-        <Card className="flex flex-col items-center justify-center p-8 text-center bg-bg-secondary/50 border-dashed border-2 border-border-light hover:border-primary/50 transition-colors">
-          <div className="rounded-full bg-primary/10 p-4 mb-4">
-            <FileText className="h-6 w-6 text-primary" />
-          </div>
-          <h3 className="font-semibold text-lg text-text-primary">Update Resume</h3>
-          <p className="text-sm text-text-secondary mb-4 mt-1">Upload a newer version of your CV to update your profile automatically.</p>
-          <Button variant="outline">Upload Resume</Button>
-        </Card>
+        <ResumeUploaderCard />
 
         <Card className="flex flex-col items-center justify-center p-8 text-center bg-bg-secondary/50 border-dashed border-2 border-border-light hover:border-primary/50 transition-colors">
           <div className="rounded-full bg-primary/10 p-4 mb-4">

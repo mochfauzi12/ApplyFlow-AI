@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { LayoutDashboard, FileText, UploadCloud, History, Settings, LogOut } from "lucide-react"
+import { logout } from "@/app/auth/actions"
 
 interface SidebarProps {
   className?: string
@@ -55,10 +56,12 @@ export function Sidebar({ className }: SidebarProps) {
             <Settings className="h-4 w-4" />
             <span className="text-sm font-medium">Settings</span>
           </Link>
-          <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-error transition-all hover:bg-error/10">
-            <LogOut className="h-4 w-4" />
-            <span className="text-sm font-medium">Log out</span>
-          </button>
+          <form action={logout} className="w-full">
+            <button type="submit" className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-error transition-all hover:bg-error/10">
+              <LogOut className="h-4 w-4" />
+              <span className="text-sm font-medium">Log out</span>
+            </button>
+          </form>
         </nav>
       </div>
     </div>

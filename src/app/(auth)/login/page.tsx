@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { login } from '@/app/auth/actions'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft } from 'lucide-react'
+import { GoogleLoginButton } from '@/components/auth/GoogleLoginButton'
 
 export default async function LoginPage({
   searchParams,
@@ -30,7 +31,22 @@ export default async function LoginPage({
           </p>
         </div>
 
-        <form className="mt-8 space-y-6" action={login}>
+        <div className="mt-8">
+          <GoogleLoginButton />
+          
+          <div className="relative mt-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-border-light" />
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="bg-bg-secondary px-2 text-text-secondary">
+                Or continue with email
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <form className="mt-6 space-y-6" action={login}>
           {error && (
             <div className="rounded-md bg-error/10 p-4">
               <div className="flex">

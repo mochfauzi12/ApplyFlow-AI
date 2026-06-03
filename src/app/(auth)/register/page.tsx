@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { signup } from '@/app/auth/actions'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft } from 'lucide-react'
+import { GoogleLoginButton } from '@/components/auth/GoogleLoginButton'
 
 export default async function RegisterPage({
   searchParams,
@@ -25,12 +26,27 @@ export default async function RegisterPage({
           <p className="mt-2 text-sm text-text-secondary">
             Already have an account?{' '}
             <Link href="/login" className="font-medium text-primary hover:text-primary-hover">
-              Sign in here
+              Sign in
             </Link>
           </p>
         </div>
 
-        <form className="mt-8 space-y-6" action={signup}>
+        <div className="mt-8">
+          <GoogleLoginButton />
+          
+          <div className="relative mt-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-border-light" />
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="bg-bg-secondary px-2 text-text-secondary">
+                Or continue with email
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <form className="mt-6 space-y-6" action={signup}>
           {error && (
             <div className="rounded-md bg-error/10 p-4">
               <div className="flex">

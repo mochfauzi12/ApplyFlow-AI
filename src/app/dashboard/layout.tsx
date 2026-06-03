@@ -1,4 +1,5 @@
 import { Sidebar } from "@/components/ui/sidebar"
+import { MobileHeader } from "@/components/ui/mobile-header"
 
 export default function DashboardLayout({
   children,
@@ -6,14 +7,11 @@ export default function DashboardLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="flex h-screen overflow-hidden bg-bg-primary">
-      <Sidebar className="hidden md:flex" />
-      <div className="flex-1 overflow-auto">
-        <header className="flex h-16 items-center border-b border-border-light bg-bg-secondary px-6 md:hidden">
-          <span className="font-bold text-xl tracking-tight text-primary">ApplyFlow</span>
-          <span className="font-bold text-xl tracking-tight text-text-primary ml-1">AI</span>
-        </header>
-        <main className="p-6 md:p-8">
+    <div className="flex h-screen overflow-hidden bg-bg-primary w-full">
+      <Sidebar className="hidden md:flex flex-shrink-0" />
+      <div className="flex-1 overflow-auto flex flex-col w-full relative">
+        <MobileHeader />
+        <main className="p-4 md:p-8 w-full">
           {children}
         </main>
       </div>

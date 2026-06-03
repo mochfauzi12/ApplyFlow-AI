@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { login } from '@/app/auth/actions'
 import { Button } from '@/components/ui/button'
+import { ArrowLeft } from 'lucide-react'
 
 export default async function LoginPage({
   searchParams,
@@ -10,8 +11,13 @@ export default async function LoginPage({
   const { error } = await searchParams
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-bg-primary px-4 py-12">
-      <div className="w-full max-w-md space-y-8 rounded-xl bg-bg-secondary p-8 shadow-md border border-border-light">
+    <div className="flex min-h-screen items-center justify-center bg-bg-primary px-4 py-12 relative">
+      <Link href="/" className="absolute top-8 left-8 flex items-center gap-2 text-text-secondary hover:text-primary transition-colors font-medium">
+        <ArrowLeft className="w-5 h-5" />
+        Back to Home
+      </Link>
+      
+      <div className="w-full max-w-md space-y-8 rounded-xl bg-bg-secondary p-8 shadow-md border border-border-light z-10">
         <div className="text-center">
           <h2 className="mt-6 text-3xl font-bold tracking-tight text-text-primary">
             Sign in to your account

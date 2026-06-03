@@ -13,7 +13,7 @@ export function ResumeUploaderCard() {
     return (
       <Card className="p-6 bg-bg-secondary/50">
         <div className="mb-4 flex items-center justify-between">
-          <h3 className="font-semibold text-lg text-text-primary">Upload Resume</h3>
+          <h3 className="font-semibold text-lg text-text-primary">Upload Data Source</h3>
           <button 
             onClick={() => setShowUpload(false)}
             className="text-sm text-text-secondary hover:text-primary transition-colors"
@@ -23,8 +23,8 @@ export function ResumeUploaderCard() {
         </div>
         <FileUpload 
           onUpload={uploadResume} 
-          accept=".pdf,.docx" 
-          maxSizeMB={5} 
+          accept=".pdf,.docx,.xlsx" 
+          maxSizeMB={10} 
         />
       </Card>
     )
@@ -38,8 +38,8 @@ export function ResumeUploaderCard() {
       <div className="rounded-full bg-primary/10 p-4 mb-4 group-hover:scale-110 transition-transform">
         <FileText className="h-6 w-6 text-primary" />
       </div>
-      <h3 className="font-semibold text-lg text-text-primary">Update Resume</h3>
-      <p className="text-sm text-text-secondary mt-1">Upload a newer version of your CV to update your profile automatically.</p>
+      <h3 className="font-semibold text-lg text-text-primary">Add Data Source</h3>
+      <p className="text-sm text-text-secondary mt-1">Upload CVs, previously filled HR forms (PDF/Excel), or portfolios to enrich your profile.</p>
     </Card>
   )
 }

@@ -123,8 +123,7 @@ export const parseResumeJob = inngest.createFunction(
               professional_summary: { type: Type.STRING, nullable: true, description: "A brief 2-3 sentence summary" },
               profile_data_json: { 
                 type: Type.OBJECT, 
-                description: "A rich object containing arrays/objects of ALL other extracted details like skills, education, experience, specific HR form answers, etc.",
-                additionalProperties: { type: Type.ANY }
+                description: "A rich object containing arrays/objects of ALL other extracted details like skills, education, experience, specific HR form answers, etc."
               }
             }
           }

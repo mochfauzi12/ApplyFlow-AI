@@ -1,10 +1,26 @@
+"use client"
+
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { motion } from "framer-motion"
 
 export default function LandingPage() {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.15 }
+    }
+  }
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
+  }
+
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="px-4 lg:px-6 h-20 flex items-center border-b border-border-light bg-bg-secondary/80 backdrop-blur-md sticky top-0 z-50">
+      <header className="px-4 lg:px-6 h-20 flex items-center border-b border-border-light bg-bg-secondary/70 glass sticky top-0 z-50">
         <Link className="flex items-center justify-center" href="/">
           <span className="font-bold text-2xl tracking-tighter text-primary">ApplyFlow</span>
           <span className="font-bold text-2xl tracking-tighter text-text-primary ml-1">AI</span>
@@ -22,26 +38,37 @@ export default function LandingPage() {
         </nav>
       </header>
       <main className="flex-1">
-        <section className="w-full py-24 md:py-32 lg:py-48 xl:py-56 bg-bg-primary">
-          <div className="container px-4 md:px-6 mx-auto">
-            <div className="flex flex-col items-center space-y-8 text-center">
+        <section className="w-full py-24 md:py-32 lg:py-48 xl:py-56 relative overflow-hidden">
+          {/* Subtle background glow */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[100px] -z-10 pointer-events-none" />
+          
+          <div className="container px-4 md:px-6 mx-auto relative z-10">
+            <motion.div 
+              className="flex flex-col items-center space-y-8 text-center"
+              variants={containerVariants}
+              initial="hidden"
+              animate="show"
+            >
               <div className="space-y-4 max-w-3xl">
-                <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl/none text-text-primary">
-                  Apply To More Jobs In <span className="text-primary">Less Time</span>
-                </h1>
-                <p className="mx-auto max-w-[700px] text-text-secondary md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                <motion.h1 variants={itemVariants} className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl/none text-text-primary">
+                  Apply To More Jobs In <span className="text-primary relative inline-block">
+                    Less Time
+                    <span className="absolute bottom-2 left-0 w-full h-3 bg-primary/20 -z-10 -rotate-2" />
+                  </span>
+                </motion.h1>
+                <motion.p variants={itemVariants} className="mx-auto max-w-[700px] text-text-secondary md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                   Upload your CV once and let AI fill recruiter forms automatically while detecting missing information. Built for the modern job seeker.
-                </p>
+                </motion.p>
               </div>
-              <div className="space-x-4">
+              <motion.div variants={itemVariants} className="space-x-4 flex items-center">
                 <Link href="/dashboard">
-                  <Button size="lg" className="rounded-full px-8">Start For Free</Button>
+                  <Button size="lg" className="rounded-full px-8 font-semibold shadow-lg shadow-primary/20">Start For Free</Button>
                 </Link>
                 <Link href="#demo">
-                  <Button variant="outline" size="lg" className="rounded-full px-8 bg-bg-secondary">Watch Demo</Button>
+                  <Button variant="outline" size="lg" className="rounded-full px-8 bg-bg-secondary/50 backdrop-blur-sm">Watch Demo</Button>
                 </Link>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </div>
         </section>
         <section id="features" className="w-full py-24 bg-bg-secondary">

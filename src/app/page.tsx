@@ -6,7 +6,7 @@ import { motion, Variants } from "framer-motion"
 import dynamic from "next/dynamic"
 
 // Dynamically import ReactPlayer to prevent hydration mismatch on SSR
-const ReactPlayer = dynamic(() => import("react-player/lazy"), { ssr: false })
+const ReactPlayer = dynamic(() => import("react-player"), { ssr: false })
 
 export default function LandingPage() {
   const containerVariants: Variants = {

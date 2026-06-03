@@ -8,8 +8,17 @@ type ResumeParseEvent = {
   };
 };
 
+type FormAutofillEvent = {
+  data: {
+    formId: string;
+    userId: string;
+    filePath: string;
+  };
+};
+
 type Events = {
   "resume/parse": ResumeParseEvent;
+  "form/autofill": FormAutofillEvent;
 };
 
 // Create a client to send and receive events

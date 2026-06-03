@@ -32,7 +32,7 @@ export function Sidebar({ className }: SidebarProps) {
             <span className="text-sm font-medium">Candidate Profile</span>
           </Link>
           <Link
-            href="/dashboard/forms"
+            href="/dashboard/recruiter-forms"
             className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-text-secondary transition-all hover:text-text-primary hover:bg-bg-primary"
           >
             <UploadCloud className="h-4 w-4" />

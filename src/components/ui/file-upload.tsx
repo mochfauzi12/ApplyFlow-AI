@@ -35,10 +35,10 @@ export function FileUpload({ onUpload, accept = ".pdf,.docx", maxSizeMB = 5 }: F
       return false
     }
 
-    // Since we accept .pdf and .docx, simple extension check is often enough for UI
+    // Since we accept .pdf, .docx, .xls, .xlsx
     const ext = selectedFile.name.toLowerCase().split('.').pop()
-    if (ext !== 'pdf' && ext !== 'docx') {
-      setError('Invalid file type. Only PDF and DOCX are allowed.')
+    if (ext !== 'pdf' && ext !== 'docx' && ext !== 'doc' && ext !== 'xls' && ext !== 'xlsx') {
+      setError('Invalid file type. Only PDF, DOCX, and Excel files are allowed.')
       return false
     }
 
@@ -119,7 +119,7 @@ export function FileUpload({ onUpload, accept = ".pdf,.docx", maxSizeMB = 5 }: F
                 Click to upload or drag and drop
               </p>
               <p className="text-xs text-text-secondary mt-1">
-                PDF or DOCX (Max {maxSizeMB}MB)
+                PDF, DOCX, or Excel (Max {maxSizeMB}MB)
               </p>
             </div>
           </div>

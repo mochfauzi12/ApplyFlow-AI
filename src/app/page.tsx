@@ -42,7 +42,7 @@ export default function LandingPage() {
                 style: { objectFit: 'cover', width: '100%', height: '100%' }
               }
             }
-          }}
+          } as any}
         />
         {/* Gradient Overlays for maximum text readability */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent" />

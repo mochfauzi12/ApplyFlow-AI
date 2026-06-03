@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { UploadCloud, FileText, CheckCircle } from "lucide-react"
+import { UploadCloud, FileText, CheckCircle, Wand2 } from "lucide-react"
 import { ResumeUploaderCard } from "./resume-uploader"
+import Link from "next/link"
 
 export default function DashboardPage() {
   return (
@@ -59,14 +60,19 @@ export default function DashboardPage() {
       <div className="grid gap-4 md:grid-cols-2">
         <ResumeUploaderCard />
 
-        <Card className="flex flex-col items-center justify-center p-8 text-center bg-bg-secondary/50 border-dashed border-2 border-border-light hover:border-primary/50 transition-colors">
-          <div className="rounded-full bg-primary/10 p-4 mb-4">
-            <UploadCloud className="h-6 w-6 text-primary" />
-          </div>
-          <h3 className="font-semibold text-lg text-text-primary">Autofill New Form</h3>
-          <p className="text-sm text-text-secondary mb-4 mt-1">Upload a recruiter's form and let AI fill it out using your profile.</p>
-          <Button>Upload Recruiter Form</Button>
-        </Card>
+        <Link href="/dashboard/recruiter-forms" className="block h-full">
+          <Card className="flex flex-col items-center justify-center p-8 text-center bg-primary/5 border-2 border-primary/20 hover:border-primary/50 transition-all cursor-pointer group shadow-sm h-full relative overflow-hidden">
+            <div className="absolute top-4 left-4 bg-primary/10 text-primary font-bold px-3 py-1 rounded-full text-xs tracking-wider">
+              STEP 2: AUTOMATE
+            </div>
+            <div className="rounded-full bg-primary/10 p-4 mb-4 group-hover:scale-110 transition-transform mt-4">
+              <Wand2 className="h-8 w-8 text-primary" />
+            </div>
+            <h3 className="font-bold text-xl text-text-primary mb-2">Autofill New Form</h3>
+            <p className="text-sm text-text-secondary mb-4">Upload a blank recruiter's form here and let the AI fill it out automatically using the data from Step 1.</p>
+            <Button className="pointer-events-none">Start Autofill Process</Button>
+          </Card>
+        </Link>
       </div>
     </div>
   )

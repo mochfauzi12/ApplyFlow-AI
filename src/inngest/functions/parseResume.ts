@@ -1,11 +1,7 @@
 import { inngest } from "../client";
 import { createClient } from "@supabase/supabase-js";
 
-// We use the standard supabase-js client here because this runs in a background job
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+// Supabase client will be initialized inside the job to prevent top-level errors
 
 export const parseResumeJob = inngest.createFunction(
   { 
@@ -16,6 +12,11 @@ export const parseResumeJob = inngest.createFunction(
   },
   async ({ event, step }) => {
     const { resumeId, userId, filePath } = event.data;
+
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    );
 
     // 1. Mark status as processing
     await step.run("update-status-processing", async () => {

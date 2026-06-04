@@ -33,7 +33,7 @@ export default function RecruiterFormsPage() {
         await fetchHistory();
         return { success: true };
       }
-      return { error: "Upload failed without details." };
+      return { error: res.error || "Upload failed without details." };
     } catch (e: any) {
       return { error: e.message || "Failed to upload form" };
     }

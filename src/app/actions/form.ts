@@ -9,12 +9,12 @@ export async function uploadRecruiterForm(formData: FormData) {
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {
-    throw new Error("Unauthorized");
+    return { error: "Unauthorized" };
   }
 
   const file = formData.get("file") as File;
   if (!file) {
-    throw new Error("No file provided");
+    return { error: "No file provided" };
   }
 
   // Generate unique file path
@@ -30,7 +30,7 @@ export async function uploadRecruiterForm(formData: FormData) {
 
   if (uploadError) {
     console.error("Storage Error:", uploadError);
-    throw new Error("Failed to upload form file");
+    return { error: "Failed to upload form file: " + uploadError.message };
   }
 
   // 2. Create DB Record
@@ -48,18 +48,23 @@ export async function uploadRecruiterForm(formData: FormData) {
 
   if (dbError || !formRecord) {
     console.error("DB Error detailed:", JSON.stringify(dbError, null, 2));
-    throw new Error(`Failed to save form record: ${dbError?.message || 'Unknown error'}`);
+    return { error: `Failed to save form record: ${dbError?.message || 'Unknown error'}` };
   }
 
-  // 3. Trigger Inngest Background Job
-  await inngest.send({
-    name: "form/autofill",
-    data: {
-      formId: formRecord.id,
-      userId: user.id,
-      filePath: filePath,
-    }
-  });
+  try {
+    // 3. Trigger Inngest Background Job
+    await inngest.send({
+      name: "form/autofill",
+      data: {
+        formId: formRecord.id,
+        userId: user.id,
+        filePath: filePath,
+      }
+    });
+  } catch (inngestError: any) {
+    console.error("Inngest Error:", inngestError);
+    return { error: "Failed to trigger background job: " + (inngestError.message || "Unknown error") };
+  }
 
   revalidatePath("/dashboard/recruiter-forms");
   return { success: true, formId: formRecord.id };

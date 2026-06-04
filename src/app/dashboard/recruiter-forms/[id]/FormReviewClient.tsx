@@ -43,7 +43,7 @@ export default function FormReviewClient({ form, initialDownloadUrl }: { form: a
             className="flex items-center gap-2 px-5 py-2.5 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary-hover transition-colors shadow-sm"
           >
             <Download className="w-4 h-4" />
-            Download Filled PDF
+            {form.file_name?.toLowerCase().endsWith('.pdf') ? 'Download Filled PDF' : 'Download Filled Form'}
           </a>
         )}
       </div>

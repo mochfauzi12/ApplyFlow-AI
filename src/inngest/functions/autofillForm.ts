@@ -171,38 +171,62 @@ export const autofillFormJob = inngest.createFunction(
       await supabase.from("recruiter_forms").update({ autofill_status: "completed", autofill_json: autofillJson, autofill_percentage: percentage }).eq("id", formId);
     });
 
-    // 6. Generate Document (PDF ONLY for MVP)
+    // 6. Generate Document (PDF and Excel supported)
     const completedPath = await step.run("generate-document", async () => {
-      if (mimeType !== "application/pdf") {
-        return null; // Skip document generation for non-PDF MVP
-      }
-      
-      const { PDFDocument, rgb, StandardFonts } = await import("pdf-lib");
-      const pdfBytes = Buffer.from(fileBase64, "base64");
-      const pdfDoc = await PDFDocument.load(pdfBytes);
-      
-      // Append a new page with the filled answers as a summary
-      const page = pdfDoc.addPage();
-      const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
-      let y = page.getHeight() - 50;
-      
-      page.drawText("Autofilled Application Summary", { x: 50, y, size: 20, font, color: rgb(0.2, 0.2, 0.8) });
-      y -= 40;
-      
-      for (const item of autofillJson) {
-        if (y < 50) {
-           // simple pagination could go here, omitting for MVP brevity
+      let savedBytes: Uint8Array | Buffer;
+      let newPath = "";
+      let contentType = "";
+
+      if (mimeType === "application/pdf") {
+        const { PDFDocument, rgb, StandardFonts } = await import("pdf-lib");
+        const pdfBytes = Buffer.from(fileBase64, "base64");
+        const pdfDoc = await PDFDocument.load(pdfBytes);
+        
+        // Append a new page with the filled answers as a summary
+        const page = pdfDoc.addPage();
+        const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+        let y = page.getHeight() - 50;
+        
+        page.drawText("Autofilled Application Summary", { x: 50, y, size: 20, font, color: rgb(0.2, 0.2, 0.8) });
+        y -= 40;
+        
+        for (const item of autofillJson) {
+          if (y < 50) {
+             // pagination logic omitted for MVP
+          }
+          page.drawText(`Q: ${item.question}`, { x: 50, y, size: 12, font });
+          y -= 20;
+          page.drawText(`A: ${item.answer}`, { x: 50, y, size: 12, font, color: rgb(0.1, 0.5, 0.1) });
+          y -= 30;
         }
-        page.drawText(`Q: ${item.question}`, { x: 50, y, size: 12, font });
-        y -= 20;
-        page.drawText(`A: ${item.answer}`, { x: 50, y, size: 12, font, color: rgb(0.1, 0.5, 0.1) });
-        y -= 30;
+        
+        savedBytes = await pdfDoc.save();
+        newPath = `${userId}/filled_${Date.now()}.pdf`;
+        contentType = "application/pdf";
+      } else if (ext === "xlsx" || ext === "xls") {
+        const xlsx = await import("xlsx");
+        const workbook = xlsx.read(Buffer.from(fileBase64, "base64"));
+        
+        // Create a new sheet for AI Answers
+        const wsData = [
+          ["Question", "AI Answer", "Missing Info?"]
+        ];
+        
+        for (const item of autofillJson) {
+          wsData.push([item.question, item.answer, item.missing ? "Yes" : "No"]);
+        }
+        
+        const ws = xlsx.utils.aoa_to_sheet(wsData);
+        xlsx.utils.book_append_sheet(workbook, ws, "AI Answers Summary");
+        
+        savedBytes = xlsx.write(workbook, { type: "buffer", bookType: ext as any });
+        newPath = `${userId}/filled_${Date.now()}.${ext}`;
+        contentType = mimeType;
+      } else {
+        return null; // Skip document generation for unsupported types
       }
       
-      const savedPdfBytes = await pdfDoc.save();
-      const newPath = `${userId}/filled_${Date.now()}.pdf`;
-      
-      await supabase.storage.from("forms").upload(newPath, savedPdfBytes, { contentType: "application/pdf" });
+      await supabase.storage.from("forms").upload(newPath, savedBytes, { contentType });
       
       await supabase.from("recruiter_forms").update({ completed_form_path: newPath }).eq("id", formId);
       return newPath;
